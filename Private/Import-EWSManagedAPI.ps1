@@ -8,7 +8,10 @@ Param(
                ValueFromPipeline=$true,
                ValueFromPipelineByPropertyName=$true,
                HelpMessage="Path to one or more locations where the EWS Managed API can be found. Specify either a directory containing the EWS Managed API DLLs or a direct path to Microsoft.Exchange.WebServices.dll.")]
-    [Alias("PSPath")]
+    [Alias(
+        "PSPath",
+        "Path"
+    )]
     [ValidateNotNullOrEmpty()]
     [string[]]
     $ImportPath

@@ -32,6 +32,31 @@ foreach ($Library in (Get-Childitem "$PSScriptRoot\Library\*.dll")) {
 }
 #>
 
-# Export our public functions, now that they exist
-$Scripts.Public | ForEach-Object BaseName | Export-ModuleMember 
+try {
+
+	$LocationParams = @{}
+
+
+	# Do we already have a stored location?
+	If (Get-EWSManagedAPILocation) {
+
+		$LocationParams.Path = Get-EWSManagedAPILocation
+		Write-Verbose "Stored API path: $($LocationParams.Path)"
+	}
+	
+	# Try importing the API
+	Import-EWSManagedAPI @LocationParams
+
+	# We must have survived, export our functions
+	$Scripts.Public | ForEach-Object BaseName | Export-ModuleMember 
+}
+catch [System.IO.FileNotFoundException] {
+	$Script:FallbackMode = $true
+	Export-ModuleMember -Function "Install-EWSManagedAPI","Set-EWSManagedAPILocation"
+	Write-Error "Failed to import EWS Managed API. Loading PSEWS in fallback mode. 
+	Use Set-EWSManagedAPILocation to specify the location of the EWS Managed API, or use Install-EWSManagedAPI to install via NuGet (elevation required).
+	The module will reload automatically."
+}
+
+
 
