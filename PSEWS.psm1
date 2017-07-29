@@ -50,7 +50,7 @@ try {
 	# We must have survived, export our functions
 	$Scripts.Public | ForEach-Object BaseName | Export-ModuleMember
 
-	$Script:Profiles = @{}
+	$Script:EWSProfiles = @{}
 }
 catch [System.IO.FileNotFoundException] {
 	$Script:FallbackMode = $true
