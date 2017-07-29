@@ -48,13 +48,15 @@ try {
 	Import-EWSManagedAPI @LocationParams
 
 	# We must have survived, export our functions
-	$Scripts.Public | ForEach-Object BaseName | Export-ModuleMember 
+	$Scripts.Public | ForEach-Object BaseName | Export-ModuleMember
+
+	$Script:Accounts = @{}
 }
 catch [System.IO.FileNotFoundException] {
 	$Script:FallbackMode = $true
 	Export-ModuleMember -Function "Install-EWSManagedAPI","Set-EWSManagedAPILocation"
 	Write-Error "Failed to import EWS Managed API. Loading PSEWS in fallback mode. 
-	Use Set-EWSManagedAPILocation to specify the location of the EWS Managed API, or use Install-EWSManagedAPI to install via NuGet (elevation required).
+	Use Set-EWSManagedAPILocation to specify the location of the EWS Managed API, or use Install-EWSManagedAPI to install via NuGet.
 	The module will reload automatically."
 }
 
