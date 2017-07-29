@@ -1,6 +1,8 @@
 Function Import-EWSManagedAPI {
 [CmdletBinding()]
 [OutputType("void")]
+# Rule is bugged, see https://github.com/PowerShell/PSScriptAnalyzer/issues/636
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 Param(
     # Specifies a path to one or more locations.
     [Parameter(Mandatory=$false,
