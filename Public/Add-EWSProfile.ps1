@@ -16,9 +16,9 @@ param (
         "primarySmtpAddress"
     )]
     [ValidateScript({
-        [system.net.mail.mailaddress]::new($_.Username) | Out-Null
+        [system.net.mail.mailaddress]::new($_.Username)
     })]
-    [Credential()]
+    [System.Management.Automation.Credential()]
     [PSCredential]$Credential,
 
     [Switch]$SetAsDefault,
@@ -35,15 +35,16 @@ param (
 process {
     $GUID = New-Guid
 
-    $Script:Profiles[$GUID.ToString()] = @{
+    $Script:EWSProfiles[$GUID.ToString()] = [PSCustomObject]@{
 
         Credential = $Credential
         Server = $null
         Scope = $Scope
+        ExchangeService = [Microsoft.Exchange.WebServices.Data.ExchangeService]::new()
     }
 
     # Force default if there's only one profile loaded
-    if ($Script:Profiles.Count -eq 1) {
+    if ($Script:EWSProfiles.Count -eq 1) {
 
         $SetAsDefault = $true
 
@@ -67,7 +68,7 @@ process {
 
     }
 
-    return $Script:Profiles[$GUID.ToString()]
+    return $Script:EWSProfiles[$GUID.ToString()]
 }
     
 
