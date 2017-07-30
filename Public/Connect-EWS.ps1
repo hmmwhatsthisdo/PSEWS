@@ -91,9 +91,20 @@ Process {
 
         if ($ExchSvc.Url) {
 
-            Write-Verbose "$Account connected to $($ExchSvc.Url)"
-            $_Profile.Server = ([URI]$ExchSvc.Url).Host
-            $_Profile.ExchangeService = $ExchSvc
+            try {
+
+                Write-Verbose "Attempting to bind to root folder..."
+
+                # Try to bind to the root folder of our account, just to make sure we were able to form a connection of some sort
+                [Microsoft.Exchange.WebServices.Data.Folder]::Bind($svc, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root) | Out-Null
+
+                Write-Verbose "$Account connected to $($ExchSvc.Url)"
+                $_Profile.Server = ([URI]$ExchSvc.Url).Host
+                $_Profile.ExchangeService = $ExchSvc
+                
+            } catch {
+                Write-Error "Failed to validate connection to Exchange. Verify the credentials are correct and try again."
+            }
             
         }
 
