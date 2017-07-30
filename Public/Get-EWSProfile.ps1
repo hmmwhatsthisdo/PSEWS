@@ -24,6 +24,7 @@ Param(
 
     # The GUID referencing a profile.
     [Parameter(
+        Mandatory = $true,
         Position = 0,
         ParameterSetName = "ByGUID",
         ValueFromPipelineByPropertyName = $true
@@ -32,7 +33,14 @@ Param(
         "GUID",
         "ID"
     )]
-    [GUID]$ProfileGUID
+    [GUID]$ProfileGUID,
+
+    # Get the default profile.
+    [Parameter(
+        Mandatory = $true,
+        ParameterSetName = "DefaultOnly"
+    )]
+    [Switch]$Default
 )
 
     return $Script:EWSProfiles.GetEnumerator() | ForEach-Object Value | ForEach-Object {
@@ -42,7 +50,9 @@ Param(
         } elseif ($PSCmdlet.ParameterSetName -eq "ByServer") {
             $_ | Where-Object Server -like $Server
         } elseif ($PSCmdlet.ParameterSetName -eq "ByGUID") {
-            $_ | Where-Object Guid -eq $GUID
+            $_ | Where-Object Guid -eq $ProfileGUID
+        } elseif ($PSCmdlet.ParameterSetName -eq "DefaultOnly") {
+            Get-EWSProfile -ProfileGUID $Script:DefaultProfileGUID
         } else {
             $_
         } 
