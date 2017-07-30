@@ -85,6 +85,7 @@ Process {
 
         } Else {
         
+            Write-Verbose "EWS URI $EndpointURI specified, skipping autodiscover"
             $ExchSvc.Url = $EndpointURI
 
         }
@@ -96,7 +97,7 @@ Process {
                 Write-Verbose "Attempting to bind to root folder..."
 
                 # Try to bind to the root folder of our account, just to make sure we were able to form a connection of some sort
-                [Microsoft.Exchange.WebServices.Data.Folder]::Bind($svc, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root) | Out-Null
+                [Microsoft.Exchange.WebServices.Data.Folder]::Bind($ExchSvc, [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root) | Out-Null
 
                 Write-Verbose "$Account connected to $($ExchSvc.Url)"
                 $_Profile.Server = ([URI]$ExchSvc.Url).Host
