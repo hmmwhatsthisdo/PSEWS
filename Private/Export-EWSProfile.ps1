@@ -2,7 +2,7 @@ function Export-EWSProfile {
 Param(
     # The profile to export
     [Parameter(Mandatory = $true, Position = 0)]
-    [Hashtable]
+    [PSCustomObject]
     $Profile,
 
     # The GUID of the profile, so it can be used as an invariant.

@@ -35,16 +35,21 @@ Param(
     [GUID]$ProfileGUID
 )
 
-    $Profiles = $Script:EWSProfiles.GetEnumerator()
+    return $Script:EWSProfiles.GetEnumerator() | ForEach-Object Value | ForEach-Object {
 
-    if ($PSCmdlet.ParameterSetName -eq "ByProfileName") {
-        return $Profiles | ForEach-Object Value | Where-Object Name -like $ProfileName
-    } elseif ($PSCmdlet.ParameterSetName -eq "ByServer") {
-        return $Profiles | ForEach-Object Value | Where-Object Server -like $Server
-    } elseif ($PSCmdlet.ParameterSetName -eq "ByGUID") {
-        return $Script:EWSProfiles[$ProfileGUID.ToString()]
-    } else {
-        return $Profiles
+        if ($PSCmdlet.ParameterSetName -eq "ByProfileName") {
+            $_ | Where-Object {$_.Credential.Username -like $ProfileName}
+        } elseif ($PSCmdlet.ParameterSetName -eq "ByServer") {
+            $_ | Where-Object Server -like $Server
+        } elseif ($PSCmdlet.ParameterSetName -eq "ByGUID") {
+            $_ | Where-Object Guid -eq $GUID
+        } else {
+            $_
+        } 
+    } | ForEach-Object {
+        $_.PSObject.Copy() # This may not be necessary... not sure
     }
+
+    
 
 }

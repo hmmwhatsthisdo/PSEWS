@@ -41,6 +41,7 @@ process {
         Server = $null
         Scope = $Scope
         ExchangeService = [Microsoft.Exchange.WebServices.Data.ExchangeService]::new()
+        Guid = $GUID
     }
 
     # Force default if there's only one profile loaded
@@ -58,7 +59,7 @@ process {
 
     if ($Scope -eq "User") {
 
-        Export-EWSProfile $Profiles[$GUID.ToString()] -Guid $GUID
+        Export-EWSProfile $EWSProfiles[$GUID.ToString()] -Guid $GUID
 
         if ($SetAsDefault) {
 

@@ -10,17 +10,24 @@ If (Test-Path $env:APPDATA\PSEWS\Profiles) {
 
     $Profiles | ForEach-Object {
 
-        $Script:Profiles[$_.BaseName] = Import-Clixml $_
+        $Script:EWSProfiles[$_.BaseName] = Import-Clixml $_
 
     }
 
-    $DiskDefaultGUID = Import-Clixml $env:APPDATA\PSEWS\DefaultProfileGUID.clixml
+    if (Test-path $env:APPDATA\PSEWS\DefaultProfileGUID.clixml) {
+        
+        $DiskDefaultGUID = Import-Clixml $env:APPDATA\PSEWS\DefaultProfileGUID.clixml    
 
-    if ($Script:Profiles[$DiskDefaultGUID.ToString()]) {
+        if ($Script:EWSProfiles[$DiskDefaultGUID.ToString()]) {
 
-        $Script:DefaultProfileGUID = $DiskDefaultGUID
+            $Script:DefaultProfileGUID = $DiskDefaultGUID
+
+        }
 
     }
+
+
+    
 
 }
 
