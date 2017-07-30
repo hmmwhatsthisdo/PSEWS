@@ -44,7 +44,7 @@ Param(
 )
 
     if ($PSCmdlet.ParameterSetName -eq "DefaultOnly") {
-        Get-EWSProfile -ProfileGUID $Script:DefaultProfileGUID
+        return Get-EWSProfile -ProfileGUID $Script:DefaultProfileGUID
     } 
 
     return $Script:EWSProfiles.GetEnumerator() | ForEach-Object Value | ForEach-Object {
