@@ -40,7 +40,7 @@ process {
         Credential = $Credential
         Server = $null
         Scope = $Scope
-        ExchangeService = [Microsoft.Exchange.WebServices.Data.ExchangeService]::new()
+        ExchangeService = $null
         Guid = $GUID
     }
 
