@@ -16,7 +16,7 @@ If (Test-Path $env:APPDATA\PSEWS\Profiles) {
 
     if (Test-path $env:APPDATA\PSEWS\DefaultProfileGUID.clixml) {
         
-        $DiskDefaultGUID = Import-Clixml $env:APPDATA\PSEWS\DefaultProfileGUID.clixml    
+        $DiskDefaultGUID = [GUID](Import-Clixml $env:APPDATA\PSEWS\DefaultProfileGUID.clixml)
 
         if ($Script:EWSProfiles[$DiskDefaultGUID.ToString()]) {
 
