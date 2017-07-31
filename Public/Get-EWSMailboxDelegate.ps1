@@ -48,11 +48,14 @@ function Get-EWSMailboxDelegate {
 
             switch ($_.Result) {
                 "Error" { 
+
                     Write-Error "Failed to obtain delegate for mailbox $Mailbox`: $($_DelegateUserResponse.ErrorMessage)"
+
                 }
                 "Success" {
                     
                     Write-Output $_DelegateUserResponse.DelegateUser
+                    
                 }
             }
 
