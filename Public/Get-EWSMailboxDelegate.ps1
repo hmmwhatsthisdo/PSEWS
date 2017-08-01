@@ -53,9 +53,11 @@ function Get-EWSMailboxDelegate {
 
                 }
                 "Success" {
+
+                    $_DelegateUserResponse.DelegateUser | Add-Member -MemberType NoteProperty -Name Mailbox -Value $Mailbox
                     
                     Write-Output $_DelegateUserResponse.DelegateUser
-                    
+
                 }
             }
 
