@@ -156,12 +156,19 @@ function Add-EWSMailboxDelegate {
             }
 
             if ($PSCmdlet.ParameterSetName -eq "ByParameter") {
+
+                "Calendar","Contacts","Inbox","Journal","Notes","Tasks" | ForEach-Object {
+                    $delegate.Permissions."$($_)FolderPermissionLevel" = (Get-Variable "$($_)FolderPermissionLevel").Value
+                }
+                <#
                 $delegate.Permissions.CalendarFolderPermissionLevel = $CalendarFolderPermissionLevel
                 $delegate.Permissions.ContactsFolderPermissionLevel = $ContactsFolderPermissionLevel
                 $delegate.Permissions.InboxFolderPermissionLevel = $InboxFolderPermissionLevel
                 $delegate.Permissions.JournalFolderPermissionLevel = $JournalFolderPermissionLevel
                 $delegate.Permissions.NotesFolderPermissionLevel = $NotesFolderPermissionLevel
                 $delegate.Permissions.TasksFolderPermissionLevel = $TasksFolderPermissionLevel
+                #>
+                
             } else {
                 # Copy properties onto the delegate's permissions, as Permissions itself is read-only
                 "Calendar","Contacts","Inbox","Journal","Notes","Tasks" | ForEach-Object {
