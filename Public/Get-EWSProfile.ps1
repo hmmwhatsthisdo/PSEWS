@@ -1,5 +1,5 @@
 function Get-EWSProfile {
-[OutputType("PSEWS.Profile[]")]
+# [OutputType("PSEWS.Profile[]")]
 [CmdletBinding(
     DefaultParameterSetName = "All"
 )]
