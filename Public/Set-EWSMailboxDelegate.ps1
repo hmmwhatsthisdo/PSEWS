@@ -126,6 +126,8 @@ function Set-EWSMailboxDelegate {
 
         [Switch]$ViewPrivateItems,
 
+        [Switch]$PassThru,
+
         [ValidateNotNull()]
         [PSCustomObject]
         $Profile = $(Get-EWSProfile -Default)
@@ -138,7 +140,7 @@ function Set-EWSMailboxDelegate {
         $ExchSvc = [Microsoft.Exchange.WebServices.Data.ExchangeService]($Profile.ExchangeService)
 
         $DelegatesToUpdate = @()
-        
+
     }
     
     process {
@@ -199,26 +201,28 @@ function Set-EWSMailboxDelegate {
 
         $Response = $ExchSvc.UpdateDelegates($Mailbox, $null, $DelegatesToUpdate)
 
-            $Response | ForEach-Object {
+        $Response | ForEach-Object {
 
-                $_Response = $_
+            $_Response = $_
 
-                switch ($_Response.Result) {
+            switch ($_Response.Result) {
 
-                    "Success" { 
+                "Success" { 
 
-                        Write-Verbose "Updated delegate permissions for user $($_Response.DelegateUser.UserId.PrimarySmtpAddress) on mailbox $($Mailbox.ToString()) successfully."
-
+                    Write-Verbose "Updated delegate permissions for user $($_Response.DelegateUser.UserId.PrimarySmtpAddress) on mailbox $($Mailbox.ToString()) successfully."
+                    If ($PassThru) {
+                        Write-Output $_Response.DelegateUser
                     }
-                    "Error" {
+                }
+                "Error" {
 
-                        Write-Error "Unable to update delegate permissions for user $($_Response.DelegateUser.UserId.PrimarySmtpAddress): $($_Response.ErrorMessage)" -ErrorId $_Response.ErrorCode -TargetObject $_Response.DelegateUser
-
-                    }
+                    Write-Error "Unable to update delegate permissions for user $($_Response.DelegateUser.UserId.PrimarySmtpAddress): $($_Response.ErrorMessage)" -ErrorId $_Response.ErrorCode -TargetObject $_Response.DelegateUser
 
                 }
 
             }
+
+        }
 
     }
     

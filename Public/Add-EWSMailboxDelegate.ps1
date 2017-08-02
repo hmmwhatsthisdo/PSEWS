@@ -126,6 +126,8 @@ function Add-EWSMailboxDelegate {
 
         [Switch]$ViewPrivateItems,
 
+        [Switch]$PassThru,
+
         [ValidateNotNull()]
         [PSCustomObject]
         $Profile = $(Get-EWSProfile -Default)
@@ -187,6 +189,9 @@ function Add-EWSMailboxDelegate {
             switch ($_Response.Result) {
                 "Success" { 
                     Write-Verbose "Added $($_Response.DelegateUser.UserId.PrimarySmtpAddress) as delegate to $($Mailbox.ToString()) successfully."
+                    If ($PassThru) {
+                        Write-Output $_Response.DelegateUser
+                    }
                  }
                 "Error" {
                     Write-Error "Unable to add user $($_Response.DelegateUser.UserId.PrimarySmtpAddress): $($_Response.ErrorMessage)" -ErrorId $_Response.ErrorCode -TargetObject $_Response.DelegateUser
