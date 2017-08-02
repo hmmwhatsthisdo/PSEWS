@@ -115,7 +115,6 @@ function Set-EWSMailboxDelegate {
 
         # A predefined DelegatePermissions object to be evaluated before individual permissions.
         [Parameter(
-            Mandatory = $true,
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateNotNull()]
