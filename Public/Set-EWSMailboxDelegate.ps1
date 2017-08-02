@@ -182,7 +182,7 @@ function Set-EWSMailboxDelegate {
 
             }
             
-            If ($PSBoundParameters.ContainsKey("ReceiveCopiesOfMeetingMessages")) {
+            If ($PSBoundParameters.ContainsKey("ReceiveMeetingMessageCopies")) {
 
                 $delegate.ReceiveCopiesOfMeetingMessages = $ReceiveMeetingMessageCopies
 
