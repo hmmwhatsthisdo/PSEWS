@@ -5,7 +5,6 @@ function Add-EWSMailboxDelegate {
     param (
         [Parameter(
             Mandatory = $true,
-            Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -21,8 +20,7 @@ function Add-EWSMailboxDelegate {
 
         # The specific UserIDs to delegate to.
         [Parameter(
-            Mandatory = $true,
-            Position = 1
+            Mandatory = $true
         )]
         [ValidateCount(1,[int32]::MaxValue)]
         [Microsoft.Exchange.WebServices.Data.UserID[]]

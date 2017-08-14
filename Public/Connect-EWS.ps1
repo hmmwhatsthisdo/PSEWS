@@ -5,15 +5,13 @@ Function Connect-EWS {
 Param (
     # The profile to connect with.
     [Parameter(
-        ValueFromPipeline = $true, 
-        Position = 0
+        ValueFromPipeline = $true
     )]
     [ValidateCount(1, ([Int32]::MaxValue))]
     [PSCustomObject[]]$Profile = $(Get-EWSProfile -Default),
 
     [Parameter(
         Mandatory = $true,
-        Position = 1,
         ParameterSetName = "ExplicitURI"
     )]
     [Alias(

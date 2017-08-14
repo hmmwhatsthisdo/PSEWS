@@ -3,7 +3,7 @@ function Get-EWSMailbox {
 [CmdletBinding()]
 param (
     [Parameter(
-        Mandatory = 0,
+        Position = 0,
         ValueFromPipeline = $true
     )]
     [Alias(

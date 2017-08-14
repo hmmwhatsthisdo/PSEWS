@@ -3,7 +3,6 @@ function Remove-EWSMailboxDelegate {
     param (
         [Parameter(
             Mandatory = $true,
-            Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -20,7 +19,6 @@ function Remove-EWSMailboxDelegate {
         # The specific UserIDs to remove delegate access for.
         [Parameter(
             Mandatory = $true,
-            Position = 1,
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateCount(1,[int32]::MaxValue)]
