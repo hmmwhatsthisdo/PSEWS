@@ -5,7 +5,6 @@ function Set-EWSMailboxDelegate {
     param (
         [Parameter(
             Mandatory = $true,
-            Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -22,8 +21,7 @@ function Set-EWSMailboxDelegate {
         # The specific UserIDs to delegate to.
         [Parameter(
             Mandatory = $true,
-            ValueFromPipelineByPropertyName = $true,
-            Position = 1
+            ValueFromPipelineByPropertyName = $true
         )]
         [ValidateCount(1,[int32]::MaxValue)]
         [Microsoft.Exchange.WebServices.Data.UserID[]]
@@ -115,7 +113,6 @@ function Set-EWSMailboxDelegate {
 
         # A predefined DelegatePermissions object to be evaluated before individual permissions.
         [Parameter(
-            Mandatory = $true,
             ValueFromPipelineByPropertyName = $true
         )]
         [ValidateNotNull()]
@@ -183,7 +180,7 @@ function Set-EWSMailboxDelegate {
 
             }
             
-            If ($PSBoundParameters.ContainsKey("ReceiveCopiesOfMeetingMessages")) {
+            If ($PSBoundParameters.ContainsKey("ReceiveMeetingMessageCopies")) {
 
                 $delegate.ReceiveCopiesOfMeetingMessages = $ReceiveMeetingMessageCopies
 

@@ -3,7 +3,6 @@ function Get-EWSMailboxDelegate {
     param (
         [Parameter(
             Mandatory = $true,
-            Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
@@ -17,9 +16,6 @@ function Get-EWSMailboxDelegate {
         [Microsoft.Exchange.WebServices.Data.Mailbox]$Mailbox,
 
         # The specific UserIDs to retrieve permissions for, if desired.
-        [Parameter(
-            Position = 1
-        )]
         [ValidateCount(1,[int32]::MaxValue)]
         [Microsoft.Exchange.WebServices.Data.UserID[]]$UserID,
 
