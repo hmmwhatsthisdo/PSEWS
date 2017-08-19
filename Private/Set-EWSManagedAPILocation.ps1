@@ -36,8 +36,8 @@ Param (
     }
 
     Function SetUserLocation ($LiteralPath) {
-        New-Item -Path $env:ProgramData -Name PSEWS -Force -ItemType Directory
-        $LiteralPath | Export-Clixml $env:ProgramData\PSEWS\APILocation.clixml | Out-Null        
+        New-Item -Path $env:ProgramData -Name PSEWS -Force -ItemType Directory | Out-Null
+        $LiteralPath | Export-Clixml $env:ProgramData\PSEWS\APILocation.clixml         
     }
 
     switch ($Scope) {
