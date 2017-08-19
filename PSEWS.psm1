@@ -57,7 +57,7 @@ try {
 	Import-EWSProfile
 	
 }
-catch [System.IO.FileNotFoundException] {
+catch [System.IO.IOException] {
 	$Script:FallbackMode = $true
 	Export-ModuleMember -Function "Install-EWSManagedAPI","Set-EWSManagedAPILocation"
 	Write-Error "Failed to import EWS Managed API. Loading PSEWS in fallback mode. 
