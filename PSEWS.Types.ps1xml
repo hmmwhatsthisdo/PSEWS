@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Types>
+    <Type>
+        <Name>Microsoft.Exchange.WebServices.Data.UserId</Name>
+        <Members>
+            <ScriptMethod>
+                <Name>ToString</Name>
+                <Script>
+                    if ($this.PSBase.StandardUser -ne $null) {
+                        return $this.PSBase.StandardUser.ToString()
+                    }
+                    elseif ($this.PSBase.PrimarySmtpAddress) {
+                        return $this.PSBase.PrimarySmtpAddress.ToString()
+                    }
+                    elseif ($this.PSBase.SID) {
+                        return "NT:$($this.PSBase.SID.ToString())"
+                    }
+                </Script>
+            </ScriptMethod>
+        </Members>
+    </Type>
+</Types>
