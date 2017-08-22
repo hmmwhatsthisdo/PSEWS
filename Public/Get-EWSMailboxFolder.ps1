@@ -56,11 +56,11 @@ function Get-EWSMailboxFolder {
 
         if ($Properties -contains '*') {
 
-            $PropSet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::FirstClassProperties, $Properties)
+            $PropSet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::FirstClassProperties, ([Microsoft.Exchange.WebServices.Data.FolderSchema] | Get-Member -Static -MemberType Property | ForEach-Object Name))
 
         } else {
 
-            $PropSet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::FirstClassProperties, ([Microsoft.Exchange.WebServices.Data.FolderSchema] | Get-Member -Static -MemberType Property | ForEach-Object Name))
+            $PropSet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::FirstClassProperties, $Properties)
 
         }
 
