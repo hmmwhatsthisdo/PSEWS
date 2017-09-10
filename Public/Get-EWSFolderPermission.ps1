@@ -40,7 +40,7 @@ function Get-EWSFolderPermission {
             # UserID doesn't appear to offer a loose comparison, so we have to do it ourselves.
             return $Folder.Permissions | Where-Object {
                 ($_.UserID.PrimarySmtpAddress -in ($UserID | Where-Object PrimarySmtpAddress -NE $null | ForEach-Object PrimarySmtpAddress)) -or
-                ($_.UserId.SID -in ($UserID | Where-Object UserID -NE $null | ForEach-Object UserID)) -or
+                ($_.UserId.SID -in ($UserID | Where-Object SID -NE $null | ForEach-Object SID)) -or
                 ($_.UserId.StandardUser -in ($UserID | Where-Object StandardUser -ne $null | ForEach-Object StandardUser))
             }
 
