@@ -1,5 +1,6 @@
 # Stub function until I can determine a better way to resolve mailboxes 
 function Get-EWSMailbox {
+[OutputType("Microsoft.Exchange.WebServices.Data.Mailbox")]
 [CmdletBinding()]
 param (
     [Parameter(

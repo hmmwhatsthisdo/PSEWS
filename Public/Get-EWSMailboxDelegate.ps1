@@ -1,4 +1,5 @@
 function Get-EWSMailboxDelegate {
+    [OutputType("Microsoft.Exchange.WebServices.Data.DelegateUser")]
     [CmdletBinding()]
     param (
         [Parameter(
