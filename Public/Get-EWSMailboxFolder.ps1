@@ -5,6 +5,10 @@ function Get-EWSMailboxFolder {
     )]
     param (
         
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = "WellKnown"
+        )]
         [Microsoft.Exchange.WebServices.Data.Mailbox]
         $Mailbox,
 
@@ -15,7 +19,17 @@ function Get-EWSMailboxFolder {
         [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]
         $WellKnownFolderName,
 
-        # [Microsoft.Exchange.WebServices.Data.PropertyDefinition[]]$Properties,
+        [Alias(
+            "Id"
+        )]
+        [Parameter(
+            Mandatory = $true,
+            ParameterSetName = "ById",
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true
+        )]
+        [Microsoft.Exchange.WebServices.Data.FolderId]
+        $FolderId,
 
         [ValidateNotNull()]
         [PSCustomObject]
@@ -54,20 +68,53 @@ function Get-EWSMailboxFolder {
     
     process {
 
-        if ($Properties -contains '*') {
+        Write-Verbose "Creating property set..."
 
-            $PropSet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::FirstClassProperties, ([Microsoft.Exchange.WebServices.Data.FolderSchema] | Get-Member -Static -MemberType Property | ForEach-Object Name))
+        $PropSet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::FirstClassProperties)        
+        If ($PSBoundParameters["Properties"] -ne $null) {
 
+            Write-Verbose "Properties specified."
+
+            if ($PSBoundParameters["Properties"] -contains '*') {
+                
+                Write-Verbose "Adding all properties to property set."
+    
+                [Microsoft.Exchange.WebServices.Data.FolderSchema] | Get-Member -Static -MemberType Property | ForEach-Object Name | ForEach-Object {
+    
+                    Write-Verbose "Adding property $_."
+    
+                    $PropSet.Add([Microsoft.Exchange.WebServices.Data.FolderSchema]::$_)
+    
+                }
+    
+            } else {
+    
+                Write-Verbose "Adding selected properties to property set."
+    
+                ($PSBoundParameters["Properties"]) | ForEach-Object {
+    
+                    Write-Verbose "Adding property $_."
+    
+                    $PropSet.Add([Microsoft.Exchange.WebServices.Data.FolderSchema]::$_)
+    
+                }
+    
+            }    
         } else {
 
-            $PropSet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::FirstClassProperties, $Properties)
+            Write-Verbose "No properties specified. Defaulting to first-class properties only."
+
+        }
+        
+
+        If ($PSCmdlet.ParameterSetName -eq "WellKnown") {
+
+            $FolderId = [Microsoft.Exchange.WebServices.Data.FolderID]::new($WellKnownFolderName, $Mailbox)
 
         }
 
-        
 
-
-        return [Microsoft.Exchange.WebServices.Data.Folder]::Bind($Profile.ExchangeService,[Microsoft.Exchange.WebServices.Data.FolderID]::new($WellKnownFolderName, $Mailbox), $PropSet)
+        return [Microsoft.Exchange.WebServices.Data.Folder]::Bind($Profile.ExchangeService, $FolderId, $PropSet)
 
     }
     
