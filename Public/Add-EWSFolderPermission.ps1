@@ -100,15 +100,13 @@ function Add-EWSFolderPermission {
             # Hold onto that value.
             $_UserId = $_
 
-            Write-Verbose "Processing $($_UserID.ToString())"
+            Write-Verbose "Processing $($_UserID.ToString())."
 
             # Iterate over the userIDs that already exist to ensure we're not going to add duplicate permissions.
             $ShouldContinue = $PreexistingUserIDs | ForEach-Object -ErrorAction Stop {
 
                 # This comparison might do well in an ETS-implemented method on [UserID]
-                If (($_UserId.PrimarySmtpAddress -eq $_.PrimarySmtpAddress -and ($_.PrimarySmtpAddress -ne $null)) -or
-                    ($_UserId.SID -eq $_.SID -and ($_.SID -ne $null)) -or 
-                    ($_UserId.StandardUser -eq $_.StandardUser -and ($_.StandardUser -ne $null))) {
+                If (Test-EWSUserIdMatch $_UserId $_) {
 
                     If (-not $Force) {
                         
@@ -117,6 +115,8 @@ function Add-EWSFolderPermission {
                         return $false
     
                     } Else {
+
+                        Write-Verbose "-Force specified, removing preexisting permissions."
     
                         $Folder.Permissions.Remove(($Folder.Permissions | Where-Object UserID -EQ $_))
 
@@ -167,6 +167,8 @@ function Add-EWSFolderPermission {
 
         # Last, .Update() the folder to push the permission changes back to EWS.
 
+        Write-Verbose "Saving changes to EWS..."
+        
         $Folder.Update()
 
     }
