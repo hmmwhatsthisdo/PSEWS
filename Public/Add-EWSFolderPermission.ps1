@@ -100,7 +100,7 @@ function Add-EWSFolderPermission {
             # Hold onto that value.
             $_UserId = $_
 
-            Write-Verbose ""
+            Write-Verbose "Processing $($_UserID.ToString())"
 
             # Iterate over the userIDs that already exist to ensure we're not going to add duplicate permissions.
             $ShouldContinue = $PreexistingUserIDs | ForEach-Object -ErrorAction Stop {
