@@ -7,14 +7,16 @@ function Get-EWSMailboxFolder {
         
         [Parameter(
             Mandatory = $true,
-            ParameterSetName = "WellKnown"
+            ParameterSetName = "WellKnown",
+            Position = 0
         )]
         [Microsoft.Exchange.WebServices.Data.Mailbox]
         $Mailbox,
 
         [Parameter(
             Mandatory = $true,
-            ParameterSetName = "WellKnown"
+            ParameterSetName = "WellKnown",
+            Position = 1
         )]
         [Microsoft.Exchange.WebServices.Data.WellKnownFolderName]
         $WellKnownFolderName,
@@ -26,7 +28,8 @@ function Get-EWSMailboxFolder {
             Mandatory = $true,
             ParameterSetName = "ById",
             ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
+            ValueFromPipelineByPropertyName = $true,
+            Position = 0
         )]
         [Microsoft.Exchange.WebServices.Data.FolderId]
         $FolderId,
