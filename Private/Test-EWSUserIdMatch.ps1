@@ -43,8 +43,8 @@ function Test-EWSUserIdMatch {
 
             Write-Debug "Comparing property $property."
 
-            Write-Debug "L: $((@($Left.Property, "<null>") -ne $null)[0])"
-            Write-Debug "R: $((@($Right.Property, "<null>") -ne $null)[0])"
+            Write-Debug "L: $((@($Left.$Property, "<null>") -ne $null)[0])"
+            Write-Debug "R: $((@($Right.$Property, "<null>") -ne $null)[0])"
 
 
             if (($Left.$property -eq $null) -or ($Right.$property -eq $null)) {
