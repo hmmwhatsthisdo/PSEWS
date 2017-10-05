@@ -2,7 +2,6 @@
 PowerShell module for interacting with Exchange Web Services
 
 ## Features
-* Auto
 * Delegate management
     * Get, Add, Set, Remove
 * Folder interaction
