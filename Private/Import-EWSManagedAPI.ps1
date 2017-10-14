@@ -55,6 +55,7 @@ Param(
                 Write-Verbose "Attempting to import EWS Managed API from $DLLPath..."
                 $Module = Import-Module $DLLPath -ErrorAction Stop -PassThru
                 $SuccessfulImport = $true
+                $Script:ReferencedAssemblies += $DLLPath
                 Write-Verbose "Imported EWS Managed API (DLL Version $($Module.Version)) successfully."
                 Return
 
@@ -80,6 +81,7 @@ Param(
             Write-Verbose "Attempting automatic import of EWS Managed API..."
             $Module = Import-Module Microsoft.Exchange.WebServices -ErrorAction Stop -PassThru
             $SuccessfulImport = $true
+            $Script:ReferencedAssemblies += $Module.Path
             Write-Verbose "Imported EWS Managed API (DLL Version $($Module.Version)) successfully."    
 
         }
@@ -106,7 +108,8 @@ Param(
             try {
                 Write-Verbose "Attempting to import EWS Managed API version $EWSApiVersion from $($_.Fullname)..."
                 $Module = Import-Module "$($_.FullName)\Microsoft.Exchange.WebServices.dll" -ErrorAction Stop -PassThru
-                $SuccessfulImport = $true                
+                $SuccessfulImport = $true 
+                $Script:ReferencedAssemblies += "$($_.FullName)\Microsoft.Exchange.WebServices.dll"
                 Write-Verbose "Imported EWS Managed API version $EWSApiVersion (DLL Version $($Module.Version)) successfully."
                 Return
 
@@ -134,6 +137,7 @@ Param(
             Write-Verbose "Attempting to import EWS Managed API from NuGet package..."
             $Module = Import-Module (Join-Path $EWSPath "lib\40\Microsoft.Exchange.WebServices.dll") -PassThru
             $SuccessfulImport = $true                
+            $Script:ReferencedAssemblies += (Join-Path $EWSPath "lib\40\Microsoft.Exchange.WebServices.dll")
             Write-Verbose "Imported EWS Managed API version $($EWSPackage.Version) (DLL Version $($Module.Version)) successfully."
             
         } catch {

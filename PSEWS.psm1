@@ -18,6 +18,9 @@ foreach ($Type in @("Public","Private")) {
 		
 	}
 }
+
+
+
 # We don't have any libraries for the time being, so this isn't a concern
 <#
 Write-Verbose "Importing Libraries..."
@@ -35,6 +38,7 @@ foreach ($Library in (Get-Childitem "$PSScriptRoot\Library\*.dll")) {
 try {
 
 	$LocationParams = @{}
+	$Script:ReferencedAssemblies = @()
 
 
 	# Do we already have a stored location?
@@ -47,7 +51,56 @@ try {
 	# Try importing the API
 	Import-EWSManagedAPI @LocationParams
 
-	# We must have survived, export our functions
+	# We must have survived
+
+	# Import classes, now that the EWS mAPI exists
+
+	$Classes = @{
+	
+		ps1 = Get-ChildItem "$PSScriptRoot\Class\*.class.ps1" -ErrorAction SilentlyContinue
+		cs = Get-ChildItem "$PSScriptRoot\Class\*.cs" -ErrorAction SilentlyContinue
+	
+	}
+	
+	# Import classes defined via PoSH
+	$Classes.ps1 | ForEach-Object {
+	
+		$Class = $_
+	
+		Write-Verbose $Class.FullName
+		try {
+			Write-Verbose "Importing PowerShell classes from $($Class.Name)..."
+			. $Class.FullName		
+		}
+		catch {
+			Write-Error "Failed to import PowerShell class from $($Class.Name): $_"
+		}
+	
+	}
+
+	Write-Verbose "Importing C# classes from $($Class.Name)..."	
+	try {
+		Add-Type -Path ($Classes.cs | Foreach-Object Fullname) -Verbose -ReferencedAssemblies ([Microsoft.Exchange.WebServices.Data.ExchangeService].Assembly.Location)
+	}
+	catch {
+		Write-Error "Failed to import C# class from $($Class.Name): $_"
+	}
+	
+	<# $Classes.cs | ForEach-Object {
+	
+		$Class = $_
+	
+		Write-Verbose "Importing C# classes from $($Class.Name)..."	
+		try {
+			Add-Type -Path $Class.Fullname -Verbose -ReferencedAssemblies ([Microsoft.Exchange.WebServices.Data.ExchangeService].Assembly.Location)
+		}
+		catch {
+			Write-Error "Failed to import C# class from $($Class.Name): $_"
+		}
+	
+	} #> 
+	
+	# Export our functions
 	$Scripts.Public | ForEach-Object BaseName | Export-ModuleMember
 
 	if (-not $Script:EWSProfiles) {
