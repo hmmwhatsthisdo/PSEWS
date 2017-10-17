@@ -79,14 +79,18 @@ try {
 	}
 
 	# Import classes defined via C# (because PoSH classes don't support namespaces... yet?)
-	Write-Verbose "Importing C# classes..."	
-	try {
-		Add-Type -Path ($Classes.cs | Foreach-Object Fullname) -Verbose -ReferencedAssemblies $Script:ReferencedAssemblies
+	if ($Classes.cs) {
+
+		Write-Verbose "Importing C# classes..."	
+		try {
+			Add-Type -Path ($Classes.cs | Foreach-Object Fullname) -Verbose -ReferencedAssemblies $Script:ReferencedAssemblies
+		}
+		catch {
+			Write-Error "Failed to import C# classes: $_"
+		}
+
 	}
-	catch {
-		Write-Error "Failed to import C# classes: $_"
-	}
-	
+		
 	# Export our functions
 	$Scripts.Public | ForEach-Object BaseName | Export-ModuleMember
 
