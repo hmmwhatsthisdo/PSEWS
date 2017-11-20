@@ -104,9 +104,9 @@ try {
 catch [System.IO.IOException] {
 	$Script:FallbackMode = $true
 	Export-ModuleMember -Function "Install-EWSManagedAPI","Set-EWSManagedAPILocation"
-	Write-Error "Failed to import EWS Managed API. Loading PSEWS in fallback mode. 
-	Use Set-EWSManagedAPILocation to specify the location of the EWS Managed API, or use Install-EWSManagedAPI to install via NuGet.
-	The module will reload automatically."
+	Write-Error (
+		"Failed to import EWS Managed API. Loading PSEWS in fallback mode. Use Set-EWSManagedAPILocation to specify the location of the EWS Managed API, or use Install-EWSManagedAPI to install via NuGet. The module will reload automatically."
+	)
 }
 
 
