@@ -6,6 +6,6 @@ Param(
 
     Write-Warning "Reloading module."
 
-    Import-Module $ExecutionContext.SessionState.Module.ModuleBase -Force -Global
+    Import-Module (Join-Path $ExecutionContext.SessionState.Module.ModuleBase ($ExecutionContext.SessionState.Module.Name + ".psd1")) -Force -Global
 
 }
