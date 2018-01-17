@@ -36,6 +36,8 @@ Process {
 
         $Account = $_Profile.Credential.UserName
 
+        Write-Verbose "Processing $Account."
+
         $ExchSvc = [Microsoft.Exchange.WebServices.Data.ExchangeService]::new()
 
         $ExchSvc.UseDefaultCredentials = $false
@@ -44,6 +46,7 @@ Process {
 
         If ($PSCmdlet.ParameterSetName -eq "AutoDiscover") {
             try {
+                Write-Verbose "Invoking Autodiscover for $Account..."
                 $ExchSvc.AutodiscoverUrl($Account, {
                     Param(
                         [Parameter(
