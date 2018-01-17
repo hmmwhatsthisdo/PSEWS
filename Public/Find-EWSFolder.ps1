@@ -10,10 +10,12 @@ function Find-EWSFolder {
             "FolderId"
         )]
         [Parameter(
+            Mandatory = $true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true,
             Position = 0
         )]
+        [ValidateNotNull()]
         [Microsoft.Exchange.WebServices.Data.FolderId]
         $RootFolderId = [Microsoft.Exchange.WebServices.Data.FolderId]::new([Microsoft.Exchange.WebServices.Data.WellKnownFolderName]::Root),
 
