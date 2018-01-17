@@ -7,7 +7,7 @@
         {
             "type": "PowerShell",
             "request": "launch",
-            "name": "PowerShell Interactive Session",
+            "name": "PowerShell Temporary Interactive Session",
             "cwd": "${workspaceRoot}",
             "createTemporaryIntegratedConsole": true
         },
