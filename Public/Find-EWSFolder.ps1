@@ -1,5 +1,5 @@
 function Find-EWSFolder {
-    [OutputType("Microsoft.Exchange.WebServices.Data.Folder[]")]
+    [OutputType("Microsoft.Exchange.WebServices.Data.FindFolderResults")]
     [CmdletBinding()]
     param (
         # The base folder to begin searching from.
