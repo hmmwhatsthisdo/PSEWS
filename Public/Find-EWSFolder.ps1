@@ -1,6 +1,8 @@
 function Find-EWSFolder {
     [OutputType("Microsoft.Exchange.WebServices.Data.FindFolderResults")]
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsPaging=$true
+    )]
     param (
         # The base folder to begin searching from.
         [Alias(
@@ -39,6 +41,14 @@ function Find-EWSFolder {
 
         $View = [Microsoft.Exchange.WebServices.Data.FolderView]::new([Int32]::MaxValue)
 
+        $View.PropertySet = [Microsoft.Exchange.WebServices.Data.PropertySet]::new([Microsoft.Exchange.WebServices.Data.BasePropertySet]::IdOnly, [Microsoft.Exchange.WebServices.Data.FolderSchema]::DisplayName)
+
+        If ($PSCmdlet.PagingParameters) {
+
+            $View.Offset = $(If ($PSCmdlet.PagingParameters.Skip -gt [Int32]::MaxValue) {[int32]::MaxValue} Else {$PSCmdlet.PagingParameters.Skip})
+            $View.PageSize = $(If ($PSCmdlet.PagingParameters.First -gt [Int32]::MaxValue) {[int32]::MaxValue} Else {$PSCmdlet.PagingParameters.First})
+
+        }
         If ($Recurse) {
 
             $View.Traversal = [Microsoft.Exchange.WebServices.Data.FolderTraversal]::Deep
@@ -47,9 +57,17 @@ function Find-EWSFolder {
 
             $View.Traversal = [Microsoft.Exchange.WebServices.Data.FolderTraversal]::Shallow
 
+        }        
+
+        [Microsoft.Exchange.WebServices.Data.FindFoldersResults]$Results = $ExchSvc.FindFolders($RootFolderId, $View)
+
+        If ($PSCmdlet.PagingParameters.IncludeTotalCount) {
+
+            $PSCmdlet.PagingParameters.NewTotalCount($Results.TotalCount, 1.0)
+
         }
 
-        Write-Output $ExchSvc.FindFolders($RootFolderId, $View)
+        Write-Output $Results
 
     }
     
