@@ -1,4 +1,4 @@
-function Find-EWSFolder {
+function Get-EWSChildFolder {
     [OutputType("Microsoft.Exchange.WebServices.Data.FindFolderResults")]
     [CmdletBinding(
         SupportsPaging=$true
