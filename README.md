@@ -23,7 +23,7 @@ PowerShell module for interacting with Exchange Web Services
 
 ## Installation/Usage
 1. Clone this repository to a folder on-disk.
-    * To allow for importing without specifying a path (i.e. `Import-Module PSEWS`), clone the module to a folder in `$Env:PSModulePath` (e.g. `$HOME\Documents\Windows\PowerShell\Modules\PSEWS`)
+    * To allow for importing without specifying a path (i.e. `Import-Module PSEWS`), clone the module to a folder in `$Env:PSModulePath` (e.g. `$HOME\Documents\WindowsPowerShell\Modules\PSEWS`)
 2. Import the module.
     * Example: `Import-Module C:\Path\To\PSEWS`
     * Note that downloading the module as a ZIP will cause the root folder to be named `PSEWS-master` instead of `PSEWS`.  
